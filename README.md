@@ -15,7 +15,7 @@ import Chatbot from 'react-best-chatbot';
 const steps = [
   {
     id: 1,
-    content: "Hello, word!",
+    content: "Hello, world!",
     goTo: 2
   }, 
   {
@@ -28,6 +28,8 @@ const steps = [
 const App = () => (
   <Chatbot steps={steps} />
 );
+
+export default App;
 ```
   
 ### Style props
