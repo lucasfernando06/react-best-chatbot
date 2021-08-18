@@ -1993,7 +1993,7 @@ const defaultOptions = {
       setTimeout(() => {
         toggleOpen();
         refresh();
-        window.open("https://github.com/lucasfernando06/react-powerful-chatbot", "_blank");
+        window.open("https://github.com/lucasfernando06/react-best-chatbot", "_blank");
       }, 5000);
     }
   },

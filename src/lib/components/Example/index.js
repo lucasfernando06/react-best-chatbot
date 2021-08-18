@@ -30,7 +30,7 @@ export const defaultOptions = {
         refresh();
 
         window.open(
-          "https://github.com/lucasfernando06/react-powerful-chatbot", "_blank");
+          "https://github.com/lucasfernando06/react-best-chatbot", "_blank");
 
       }, 5000);
     }

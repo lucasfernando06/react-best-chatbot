@@ -6,7 +6,7 @@
   
 ### Usage
 
-Simple and easy to get started.
+Simple and easy to get started. You'll need to install Styled Components to use.
 
 ```js
 import React from 'react';
