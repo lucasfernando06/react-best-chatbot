@@ -1,0 +1,27 @@
+* {
+  box-sizing: border-box;
+}
+
+.lf-chat-visible {
+  display: block;
+  animation: fade 0.5s linear;
+}
+
+.lf-chat-hidden {
+  display: none;
+  animation: fade 0.5s linear;
+}
+
+.lf-show-message {
+  animation: fade 0.5s linear;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
