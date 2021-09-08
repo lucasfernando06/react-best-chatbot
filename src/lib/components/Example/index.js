@@ -19,7 +19,8 @@ export const defaultOptions = {
   openingCallback: () => { },
   closingCallback: () => { },
   endingCallback: (answers, toggleOpen, refresh) => {
-    if (answers.values['redirectUser']?.value === 2) {
+    const value = answers && answers.values['redirectUser'] && answers.values['redirectUser'].value;
+    if (value === 2) {
       setTimeout(() => {
         toggleOpen();
         refresh();

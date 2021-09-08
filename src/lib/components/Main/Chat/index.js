@@ -73,7 +73,7 @@ const Bot = ({
   }, [actualStep]);
 
   useEffect(() => {
-    if (actualStep?.end) {
+    if (actualStep && actualStep.end) {
       setTimeout(() => {
         setEnd(true);
         endingCallback(answers, toggleOpen, handleResetChat);
@@ -99,8 +99,8 @@ const Bot = ({
       content: option ? newValue.content : newValue
     };
 
-    if (actualStep?.validator) {
-      const result = actualStep?.validator(value);
+    if (actualStep && actualStep.validator) {
+      const result = actualStep.validator(value);
       if (result) {
         setError(result);
         setTimeout(() => {
@@ -116,14 +116,14 @@ const Bot = ({
       ...answers,
       values: {
         ...answers.values,
-        [actualStep?.id]: option ? {
+        [actualStep && actualStep.id]: option ? {
           content: newValue.content,
           value: newValue.value
         } : newValue
       },
       timeInMs: {
         ...answers.timeInMs,
-        [actualStep?.id]: calculateTimeMs()
+        [actualStep && actualStep.id]: calculateTimeMs()
       }
     });
 
@@ -131,22 +131,22 @@ const Bot = ({
 
     handleChange('');
     setMessages(newArray);
-    triggerNext(option ? option?.goTo : actualStep?.goTo);
+    triggerNext(option ? option.goTo : (actualStep && actualStep.goTo));
     sendingMessageCallback(answers, toggleOpen);
   }
 
   const triggerNext = (goTo = null) => {
-    const target = goTo ? goTo : actualStep?.goTo;
+    const target = goTo ? goTo : (actualStep && actualStep.goTo);
 
     setTimeout(() => {
-      const nextStep = steps?.find(x => x.id === target);
+      const nextStep = steps && steps.find(x => x.id === target);
       if (nextStep) setActualStep(nextStep);
     }, messageDelay);
   }
 
   const lastIsBot = (index) => {
     const lastMessage = messages[index - 1];
-    return !lastMessage ? false : !lastMessage?.isUser;
+    return !lastMessage ? false : !lastMessage.isUser;
   }
 
   const renderMessage = (message, index) => (

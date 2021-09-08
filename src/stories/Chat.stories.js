@@ -6,5 +6,5 @@ import App from '../lib';
 const stories = storiesOf('Chatbot', module);
 
 stories.add('Main', () => {
-  return <App />
+  return <App options={{ useExample: true }} />
 });

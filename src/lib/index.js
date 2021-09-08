@@ -49,8 +49,8 @@ const Container = ({ style = {}, options = {}, steps }) => {
   };
 
   const componentProps = {
-    options: options?.useExample ? defaultOptions : config,
-    steps: options?.useExample ? defaultSteps : steps,
+    options: options && options.useExample ? defaultOptions : config,
+    steps: options && options.useExample ? defaultSteps : steps,
   };
 
   return (

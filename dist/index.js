@@ -1133,8 +1133,11 @@ if (process.env.NODE_ENV !== 'production') {
 
 var PropTypes = propTypes.exports;
 
-function _extends$3() {
-  _extends$3 = Object.assign || function (target) {
+var _extends$3 = {exports: {}};
+
+(function (module) {
+function _extends() {
+  module.exports = _extends = Object.assign || function (target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
 
@@ -1148,7 +1151,32 @@ function _extends$3() {
     return target;
   };
 
-  return _extends$3.apply(this, arguments);
+  module.exports["default"] = module.exports, module.exports.__esModule = true;
+  return _extends.apply(this, arguments);
+}
+
+module.exports = _extends;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
+}(_extends$3));
+
+var _extends$2 = /*@__PURE__*/getDefaultExportFromCjs(_extends$3.exports);
+
+function _extends$1() {
+  _extends$1 = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  return _extends$1.apply(this, arguments);
 }
 
 function _defineProperty(obj, key, value) {
@@ -1257,7 +1285,7 @@ var StyledIconBaseBase = /*#__PURE__*/React__namespace.forwardRef(function (prop
   }, iconAttrs);
 
   var svgProps = filterSVGProps(otherProps);
-  return /*#__PURE__*/React__namespace.createElement("svg", _extends$3({}, iconProps, svgProps, {
+  return /*#__PURE__*/React__namespace.createElement("svg", _extends$1({}, iconProps, svgProps, {
     ref: ref
   }), title && /*#__PURE__*/React__namespace.createElement("title", {
     key: "icon-title"
@@ -1275,7 +1303,7 @@ var Send = /*#__PURE__*/React__namespace.forwardRef(function (props, ref) {
     "fill": "currentColor",
     "xmlns": "http://www.w3.org/2000/svg"
   };
-  return /*#__PURE__*/React__namespace.createElement(StyledIconBase, _extends$3({
+  return /*#__PURE__*/React__namespace.createElement(StyledIconBase, _extends$2({
     iconAttrs: attrs,
     iconVerticalAlign: "middle",
     iconViewBox: "0 0 24 24"
@@ -1289,34 +1317,6 @@ var Send = /*#__PURE__*/React__namespace.forwardRef(function (props, ref) {
   }));
 });
 Send.displayName = 'Send';
-
-var _extends$2 = {exports: {}};
-
-(function (module) {
-function _extends() {
-  module.exports = _extends = Object.assign || function (target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
-
-      for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
-        }
-      }
-    }
-
-    return target;
-  };
-
-  module.exports["default"] = module.exports, module.exports.__esModule = true;
-  return _extends.apply(this, arguments);
-}
-
-module.exports = _extends;
-module.exports["default"] = module.exports, module.exports.__esModule = true;
-}(_extends$2));
-
-var _extends$1 = /*@__PURE__*/getDefaultExportFromCjs(_extends$2.exports);
 
 var Close = /*#__PURE__*/React__namespace.forwardRef(function (props, ref) {
   var attrs = {
@@ -1378,7 +1378,7 @@ var ChatDotsFill = /*#__PURE__*/React__namespace.forwardRef(function (props, ref
     "fill": "currentColor",
     "xmlns": "http://www.w3.org/2000/svg"
   };
-  return /*#__PURE__*/React__namespace.createElement(StyledIconBase, _extends$1({
+  return /*#__PURE__*/React__namespace.createElement(StyledIconBase, _extends$2({
     iconAttrs: attrs,
     iconVerticalAlign: "middle",
     iconViewBox: "0 0 16 16"
@@ -1395,7 +1395,7 @@ var EmojiSmile = /*#__PURE__*/React__namespace.forwardRef(function (props, ref) 
     "fill": "currentColor",
     "xmlns": "http://www.w3.org/2000/svg"
   };
-  return /*#__PURE__*/React__namespace.createElement(StyledIconBase, _extends$1({
+  return /*#__PURE__*/React__namespace.createElement(StyledIconBase, _extends$2({
     iconAttrs: attrs,
     iconVerticalAlign: "middle",
     iconViewBox: "0 0 16 16"
@@ -1819,7 +1819,7 @@ const Bot$1 = ({
     handleBotMessage(actualStep);
   }, [actualStep]);
   React.useEffect(() => {
-    if (actualStep?.end) {
+    if (actualStep && actualStep.end) {
       setTimeout(() => {
         setEnd(true);
         endingCallback(answers, toggleOpen, handleResetChat);
@@ -1843,8 +1843,8 @@ const Bot$1 = ({
       content: option ? newValue.content : newValue
     };
 
-    if (actualStep?.validator) {
-      const result = actualStep?.validator(value);
+    if (actualStep && actualStep.validator) {
+      const result = actualStep.validator(value);
 
       if (result) {
         setError(result);
@@ -1858,33 +1858,33 @@ const Bot$1 = ({
 
     setAnswers({ ...answers,
       values: { ...answers.values,
-        [actualStep?.id]: option ? {
+        [actualStep && actualStep.id]: option ? {
           content: newValue.content,
           value: newValue.value
         } : newValue
       },
       timeInMs: { ...answers.timeInMs,
-        [actualStep?.id]: calculateTimeMs()
+        [actualStep && actualStep.id]: calculateTimeMs()
       }
     });
     const newArray = [...messages, newMessage];
     handleChange('');
     setMessages(newArray);
-    triggerNext(option ? option?.goTo : actualStep?.goTo);
+    triggerNext(option ? option.goTo : actualStep && actualStep.goTo);
     sendingMessageCallback(answers, toggleOpen);
   };
 
   const triggerNext = (goTo = null) => {
-    const target = goTo ? goTo : actualStep?.goTo;
+    const target = goTo ? goTo : actualStep && actualStep.goTo;
     setTimeout(() => {
-      const nextStep = steps?.find(x => x.id === target);
+      const nextStep = steps && steps.find(x => x.id === target);
       if (nextStep) setActualStep(nextStep);
     }, messageDelay);
   };
 
   const lastIsBot = index => {
     const lastMessage = messages[index - 1];
-    return !lastMessage ? false : !lastMessage?.isUser;
+    return !lastMessage ? false : !lastMessage.isUser;
   };
 
   const renderMessage = (message, index) => /*#__PURE__*/React__default['default'].createElement(MessageContainer, {
@@ -2043,7 +2043,9 @@ const defaultOptions = {
   openingCallback: () => {},
   closingCallback: () => {},
   endingCallback: (answers, toggleOpen, refresh) => {
-    if (answers.values['redirectUser']?.value === 2) {
+    const value = answers && answers.values['redirectUser'] && answers.values['redirectUser'].value;
+
+    if (value === 2) {
       setTimeout(() => {
         toggleOpen();
         refresh();
@@ -2152,8 +2154,8 @@ const Container = ({
     ...options
   };
   const componentProps = {
-    options: options?.useExample ? defaultOptions : config,
-    steps: options?.useExample ? defaultSteps : steps
+    options: options && options.useExample ? defaultOptions : config,
+    steps: options && options.useExample ? defaultSteps : steps
   };
   return /*#__PURE__*/React__default['default'].createElement(styled.ThemeProvider, {
     theme: theme
