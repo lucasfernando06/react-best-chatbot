@@ -1106,11 +1106,8 @@ if (process.env.NODE_ENV !== 'production') {
 
 var PropTypes = propTypes.exports;
 
-var _extends$3 = {exports: {}};
-
-(function (module) {
-function _extends() {
-  module.exports = _extends = Object.assign || function (target) {
+function _extends$3() {
+  _extends$3 = Object.assign || function (target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
 
@@ -1124,32 +1121,7 @@ function _extends() {
     return target;
   };
 
-  module.exports["default"] = module.exports, module.exports.__esModule = true;
-  return _extends.apply(this, arguments);
-}
-
-module.exports = _extends;
-module.exports["default"] = module.exports, module.exports.__esModule = true;
-}(_extends$3));
-
-var _extends$2 = /*@__PURE__*/getDefaultExportFromCjs(_extends$3.exports);
-
-function _extends$1() {
-  _extends$1 = Object.assign || function (target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
-
-      for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
-        }
-      }
-    }
-
-    return target;
-  };
-
-  return _extends$1.apply(this, arguments);
+  return _extends$3.apply(this, arguments);
 }
 
 function _defineProperty(obj, key, value) {
@@ -1258,7 +1230,7 @@ var StyledIconBaseBase = /*#__PURE__*/React.forwardRef(function (props, ref) {
   }, iconAttrs);
 
   var svgProps = filterSVGProps(otherProps);
-  return /*#__PURE__*/React.createElement("svg", _extends$1({}, iconProps, svgProps, {
+  return /*#__PURE__*/React.createElement("svg", _extends$3({}, iconProps, svgProps, {
     ref: ref
   }), title && /*#__PURE__*/React.createElement("title", {
     key: "icon-title"
@@ -1271,12 +1243,40 @@ var StyledIconBase = /*#__PURE__*/styled(StyledIconBaseBase).withConfig({
   return props.iconVerticalAlign;
 });
 
+var _extends$2 = {exports: {}};
+
+(function (module) {
+function _extends() {
+  module.exports = _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  module.exports["default"] = module.exports, module.exports.__esModule = true;
+  return _extends.apply(this, arguments);
+}
+
+module.exports = _extends;
+module.exports["default"] = module.exports, module.exports.__esModule = true;
+}(_extends$2));
+
+var _extends$1 = /*@__PURE__*/getDefaultExportFromCjs(_extends$2.exports);
+
 var Send = /*#__PURE__*/React.forwardRef(function (props, ref) {
   var attrs = {
     "fill": "currentColor",
     "xmlns": "http://www.w3.org/2000/svg"
   };
-  return /*#__PURE__*/React.createElement(StyledIconBase, _extends$2({
+  return /*#__PURE__*/React.createElement(StyledIconBase, _extends$1({
     iconAttrs: attrs,
     iconVerticalAlign: "middle",
     iconViewBox: "0 0 24 24"
@@ -1296,7 +1296,7 @@ var Close = /*#__PURE__*/React.forwardRef(function (props, ref) {
     "fill": "currentColor",
     "xmlns": "http://www.w3.org/2000/svg"
   };
-  return /*#__PURE__*/React.createElement(StyledIconBase, _extends$1({
+  return /*#__PURE__*/React.createElement(StyledIconBase, _extends$3({
     iconAttrs: attrs,
     iconVerticalAlign: "middle",
     iconViewBox: "0 0 24 24"
@@ -1351,7 +1351,7 @@ var ChatDotsFill = /*#__PURE__*/React.forwardRef(function (props, ref) {
     "fill": "currentColor",
     "xmlns": "http://www.w3.org/2000/svg"
   };
-  return /*#__PURE__*/React.createElement(StyledIconBase, _extends$2({
+  return /*#__PURE__*/React.createElement(StyledIconBase, _extends$1({
     iconAttrs: attrs,
     iconVerticalAlign: "middle",
     iconViewBox: "0 0 16 16"
@@ -1368,7 +1368,7 @@ var EmojiSmile = /*#__PURE__*/React.forwardRef(function (props, ref) {
     "fill": "currentColor",
     "xmlns": "http://www.w3.org/2000/svg"
   };
-  return /*#__PURE__*/React.createElement(StyledIconBase, _extends$2({
+  return /*#__PURE__*/React.createElement(StyledIconBase, _extends$1({
     iconAttrs: attrs,
     iconVerticalAlign: "middle",
     iconViewBox: "0 0 16 16"
@@ -1829,17 +1829,17 @@ const Bot$1 = ({
       }
     }
 
-    setAnswers({ ...answers,
-      values: { ...answers.values,
+    setAnswers(Object.assign({}, {
+      values: Object.assign({}, answers.values, {
         [actualStep && actualStep.id]: option ? {
           content: newValue.content,
           value: newValue.value
         } : newValue
-      },
-      timeInMs: { ...answers.timeInMs,
+      }),
+      timeInMs: Object.assign({}, answers.timeInMs, {
         [actualStep && actualStep.id]: calculateTimeMs()
-      }
-    });
+      })
+    }));
     const newArray = [...messages, newMessage];
     handleChange('');
     setMessages(newArray);
@@ -1861,10 +1861,10 @@ const Bot$1 = ({
   };
 
   const renderMessage = (message, index) => /*#__PURE__*/React__default.createElement(MessageContainer, {
-    message: { ...message,
+    message: Object.assign({}, message, {
       src: !message.isUser ? !lastIsBot(index) ? botAvatarSrc : null : null,
       delay: delay(message.delay)
-    },
+    }),
     loadingComponent: loadingComponent,
     answers: answers,
     handleAnswer: handleAnswer,
@@ -1982,8 +1982,7 @@ const Bot = ({
     className: !open ? 'lf-chat-visible' : 'lf-chat-hidden',
     onClick: toggleOpen
   }, buttonComponent ? /*#__PURE__*/React__default.createElement("div", {
-    style: { ...style.positionStyles
-    }
+    style: Object.assign({}, style.positionStyles)
   }, buttonComponent) : /*#__PURE__*/React__default.createElement(IconContainer, {
     toggleOpen: toggleOpen,
     style: style
@@ -2120,12 +2119,8 @@ const Container = ({
   options = {},
   steps
 }) => {
-  const theme = { ...styleDefault,
-    ...style
-  };
-  const config = { ...optionsDefault,
-    ...options
-  };
+  const theme = Object.assign({}, styleDefault, style);
+  const config = Object.assign({}, optionsDefault, options);
   const componentProps = {
     options: options && options.useExample ? defaultOptions : config,
     steps: options && options.useExample ? defaultSteps : steps
