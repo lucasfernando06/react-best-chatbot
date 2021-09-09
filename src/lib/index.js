@@ -38,15 +38,8 @@ const optionsDefault = {
 
 const Container = ({ style = {}, options = {}, steps }) => {
 
-  const theme = {
-    ...styleDefault,
-    ...style
-  };
-
-  const config = {
-    ...optionsDefault,
-    ...options
-  };
+  const theme = Object.assign({}, styleDefault, style);
+  const config = Object.assign({}, optionsDefault, options);
 
   const componentProps = {
     options: options && options.useExample ? defaultOptions : config,

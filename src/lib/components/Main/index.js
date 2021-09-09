@@ -59,11 +59,10 @@ const Bot = ({ options, style, steps }) => {
         <div className={!open ? 'lf-chat-visible' : 'lf-chat-hidden'} onClick={toggleOpen}>
           {
             buttonComponent ?
-              <div style={{ ...style.positionStyles }}>{buttonComponent}</div>
+              <div style={Object.assign({}, style.positionStyles)}>{buttonComponent}</div>
               :
               <Button toggleOpen={toggleOpen} style={style} />
           }
-
         </div>
       </>
   )

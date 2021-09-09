@@ -112,20 +112,17 @@ const Bot = ({
       }
     }
 
-    setAnswers({
-      ...answers,
-      values: {
-        ...answers.values,
+    setAnswers(Object.assign({}, {
+      values: Object.assign({}, answers.values, {
         [actualStep && actualStep.id]: option ? {
           content: newValue.content,
           value: newValue.value
         } : newValue
-      },
-      timeInMs: {
-        ...answers.timeInMs,
+      }),
+      timeInMs: Object.assign({}, answers.timeInMs, {
         [actualStep && actualStep.id]: calculateTimeMs()
-      }
-    });
+      })
+    }));
 
     const newArray = [...messages, newMessage];
 
@@ -151,11 +148,10 @@ const Bot = ({
 
   const renderMessage = (message, index) => (
     <Message
-      message={{
-        ...message,
+      message={Object.assign({}, message, {
         src: !message.isUser ? !lastIsBot(index) ? botAvatarSrc : null : null,
         delay: delay(message.delay)
-      }}
+      })}
       loadingComponent={loadingComponent}
       answers={answers}
       handleAnswer={handleAnswer}
