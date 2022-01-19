@@ -1,6 +1,6 @@
 # React Best Chatbot 🚀
 
-<p>Build and customize an chatbot for exactly what you need 🔥<p>
+<p>Build and customize a chatbot for exactly what you need 🔥<p>
   
 <img src="https://www.dropbox.com/s/x3ks5g6my6y83xu/react-chatbot.gif?raw=1" height="400" />
   
