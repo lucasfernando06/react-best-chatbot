@@ -111,8 +111,8 @@ const Bot = ({
         return;
       }
     }
-
-    setAnswers(Object.assign({}, {
+    
+    const newAnswers = Object.assign({}, {
       values: Object.assign({}, answers.values, {
         [actualStep && actualStep.id]: option ? {
           content: newValue.content,
@@ -122,14 +122,15 @@ const Bot = ({
       timeInMs: Object.assign({}, answers.timeInMs, {
         [actualStep && actualStep.id]: calculateTimeMs()
       })
-    }));
+    })
+    setAnswers(newAnswers);
 
     const newArray = [...messages, newMessage];
 
     handleChange('');
     setMessages(newArray);
     triggerNext(option ? option.goTo : (actualStep && actualStep.goTo));
-    sendingMessageCallback(answers, toggleOpen);
+    sendingMessageCallback(newAnswers, toggleOpen);
   }
 
   const triggerNext = (goTo = null) => {

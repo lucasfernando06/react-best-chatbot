@@ -2,8 +2,8 @@ import * as React from 'react';
 import React__default, { useState, useEffect } from 'react';
 import styled, { keyframes, ThemeProvider } from 'styled-components';
 
-function _extends$4() {
-  _extends$4 = Object.assign || function (target) {
+function _extends$2() {
+  _extends$2 = Object.assign || function (target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
 
@@ -17,11 +17,7 @@ function _extends$4() {
     return target;
   };
 
-  return _extends$4.apply(this, arguments);
-}
-
-function getDefaultExportFromCjs (x) {
-	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
+  return _extends$2.apply(this, arguments);
 }
 
 var propTypes = {exports: {}};
@@ -1106,8 +1102,8 @@ if (process.env.NODE_ENV !== 'production') {
 
 var PropTypes = propTypes.exports;
 
-function _extends$3() {
-  _extends$3 = Object.assign || function (target) {
+function _extends$1() {
+  _extends$1 = Object.assign || function (target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
 
@@ -1121,7 +1117,7 @@ function _extends$3() {
     return target;
   };
 
-  return _extends$3.apply(this, arguments);
+  return _extends$1.apply(this, arguments);
 }
 
 function _defineProperty(obj, key, value) {
@@ -1230,7 +1226,7 @@ var StyledIconBaseBase = /*#__PURE__*/React.forwardRef(function (props, ref) {
   }, iconAttrs);
 
   var svgProps = filterSVGProps(otherProps);
-  return /*#__PURE__*/React.createElement("svg", _extends$3({}, iconProps, svgProps, {
+  return /*#__PURE__*/React.createElement("svg", _extends$1({}, iconProps, svgProps, {
     ref: ref
   }), title && /*#__PURE__*/React.createElement("title", {
     key: "icon-title"
@@ -1242,34 +1238,6 @@ var StyledIconBase = /*#__PURE__*/styled(StyledIconBaseBase).withConfig({
 })(["display:inline-block;vertical-align:", ";overflow:hidden;"], function (props) {
   return props.iconVerticalAlign;
 });
-
-var _extends$2 = {exports: {}};
-
-(function (module) {
-function _extends() {
-  module.exports = _extends = Object.assign || function (target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
-
-      for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
-        }
-      }
-    }
-
-    return target;
-  };
-
-  module.exports["default"] = module.exports, module.exports.__esModule = true;
-  return _extends.apply(this, arguments);
-}
-
-module.exports = _extends;
-module.exports["default"] = module.exports, module.exports.__esModule = true;
-}(_extends$2));
-
-var _extends$1 = /*@__PURE__*/getDefaultExportFromCjs(_extends$2.exports);
 
 var Send = /*#__PURE__*/React.forwardRef(function (props, ref) {
   var attrs = {
@@ -1296,7 +1264,7 @@ var Close = /*#__PURE__*/React.forwardRef(function (props, ref) {
     "fill": "currentColor",
     "xmlns": "http://www.w3.org/2000/svg"
   };
-  return /*#__PURE__*/React.createElement(StyledIconBase, _extends$3({
+  return /*#__PURE__*/React.createElement(StyledIconBase, _extends$1({
     iconAttrs: attrs,
     iconVerticalAlign: "middle",
     iconViewBox: "0 0 24 24"
@@ -1829,7 +1797,7 @@ const Bot$1 = ({
       }
     }
 
-    setAnswers(Object.assign({}, {
+    const newAnswers = Object.assign({}, {
       values: Object.assign({}, answers.values, {
         [actualStep && actualStep.id]: option ? {
           content: newValue.content,
@@ -1839,12 +1807,13 @@ const Bot$1 = ({
       timeInMs: Object.assign({}, answers.timeInMs, {
         [actualStep && actualStep.id]: calculateTimeMs()
       })
-    }));
+    });
+    setAnswers(newAnswers);
     const newArray = [...messages, newMessage];
     handleChange('');
     setMessages(newArray);
     triggerNext(option ? option.goTo : actualStep && actualStep.goTo);
-    sendingMessageCallback(answers, toggleOpen);
+    sendingMessageCallback(newAnswers, toggleOpen);
   };
 
   const triggerNext = (goTo = null) => {
@@ -2127,7 +2096,7 @@ const Container = ({
   };
   return /*#__PURE__*/React__default.createElement(ThemeProvider, {
     theme: theme
-  }, /*#__PURE__*/React__default.createElement(Bot, _extends$4({
+  }, /*#__PURE__*/React__default.createElement(Bot, _extends$2({
     style: theme
   }, componentProps)));
 };
