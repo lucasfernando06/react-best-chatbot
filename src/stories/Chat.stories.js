@@ -1,10 +1,10 @@
-import React from 'react';
-import { storiesOf } from '@storybook/react';
+import React from "react";
+import { storiesOf } from "@storybook/react";
 
-import App from '../lib';
+import App from "../lib";
 
-const stories = storiesOf('Chatbot', module);
+const stories = storiesOf("Chatbot", module);
 
-stories.add('Main', () => {
-  return <App options={{ useExample: true }} />
+stories.add("Main", () => {
+  return <App steps={steps} />;
 });

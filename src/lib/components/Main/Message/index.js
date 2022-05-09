@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import {
-  Container,
-  Message,
-  MessageAvatar,
-  Loading,
-  OptionsContainer,
-  Option,
-  ShowMessage,
-  CustomComponentContainer,
-  CustomLoadingContainer
-} from './styles';
-import scrollToBottom from '../../../utils/scrollToBottom';
+import React, { useEffect, useState, memo } from "react";
+
+import Container from "./components/Container";
+import Message from "./components/Message";
+import MessageAvatar from "./components/MessageAvatar";
+import Loading from "./components/Loading";
+import OptionsContainer from "./components/OptionsContainer";
+import Option from "./components/Option";
+import ShowMessage from "./components/ShowMessage";
+import CustomComponentContainer from "./components/CustomComponentContainer";
+import CustomLoadingContainer from "./components/CustomLoadingContainer";
+
+import scrollBottom from "../../../utils/scrollBottom";
 
 const MessageContainer = ({
   message,
@@ -18,9 +18,8 @@ const MessageContainer = ({
   setIsDisabled,
   handleAnswer,
   triggerNext,
-  loadingComponent
+  loadingComponent,
 }) => {
-
   const {
     src,
     isUser,
@@ -29,7 +28,7 @@ const MessageContainer = ({
     receiveInput,
     delay,
     options,
-    fetch
+    fetch,
   } = message;
 
   const [showing, setShowing] = useState(isUser);
@@ -46,7 +45,7 @@ const MessageContainer = ({
     } catch (err) {
       console.error(err);
     }
-  }
+  };
 
   const configureFlow = () => {
     setShowing(true);
@@ -55,11 +54,10 @@ const MessageContainer = ({
       if (!options) setIsDisabled(false);
     } else triggerNext();
 
-    scrollToBottom();
-  }
+    scrollBottom();
+  };
 
   useEffect(() => {
-
     const sync = async () => {
       if (!showing) {
         if (fetch) {
@@ -72,8 +70,8 @@ const MessageContainer = ({
         }
       }
 
-      scrollToBottom();
-    }
+      scrollBottom();
+    };
 
     sync();
   });
@@ -83,58 +81,51 @@ const MessageContainer = ({
     setDisableOptions(true);
   };
 
-  const renderCustomComponent = () => (<CustomComponent answers={answers} fetchResult={fetchResult} />)
+  const renderCustomComponent = () => (
+    <CustomComponent answers={answers} fetchResult={fetchResult} />
+  );
 
   return (
     <Container isUser={isUser}>
-      {
-        !showing ?
-          (
-            loadingComponent ?
-              <CustomLoadingContainer marginLeft={!src ? 50 : 0}>
-                {loadingComponent}
-              </CustomLoadingContainer>
-              :
-              <Loading marginLeft={!src ? 70 : 20} />
-          )
-          :
-          <>
-            <ShowMessage className='lf-show-message'>
-              {
-                src ? <MessageAvatar alt='Bot Avatar' src={src} />
-                  :
-                  <div style={{ marginLeft: 50 }}></div>
-              }
-              {
-                bubble ?
-                  (content || CustomComponent) &&
+      {!showing ? (
+        <Loading marginLeft={!src ? 50 : 0}>{loadingComponent}</Loading>
+      ) : (
+        <>
+          <ShowMessage>
+            {src ? (
+              <MessageAvatar alt="Bot Avatar" src={src} />
+            ) : (
+              <div style={{ marginLeft: 50 }}></div>
+            )}
+            {bubble
+              ? (content || CustomComponent) && (
                   <Message isUser={isUser}>
                     {content}
                     {CustomComponent && renderCustomComponent()}
                   </Message>
-                  :
-                  CustomComponent &&
+                )
+              : CustomComponent && (
                   <CustomComponentContainer>
                     {renderCustomComponent()}
                   </CustomComponentContainer>
-              }
-            </ShowMessage>
-            {
-              options && !disableOptions &&
-              <OptionsContainer className='lf-show-message'>
-                {
-                  options.map((option) => (
-                    <Option key={option.value} onClick={() => callHandleAnswer(option)}>
-                      {option.content}
-                    </Option>
-                  ))
-                }
-              </OptionsContainer>
-            }
-          </>
-      }
+                )}
+          </ShowMessage>
+          {options && !disableOptions && (
+            <OptionsContainer>
+              {options.map((option) => (
+                <Option
+                  key={option.value}
+                  onClick={() => callHandleAnswer(option)}
+                >
+                  {option.content}
+                </Option>
+              ))}
+            </OptionsContainer>
+          )}
+        </>
+      )}
     </Container>
-  )
-}
+  );
+};
 
-export default MessageContainer;
+export default memo(MessageContainer);

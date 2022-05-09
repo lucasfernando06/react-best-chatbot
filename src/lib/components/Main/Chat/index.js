@@ -1,48 +1,40 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
-import {
-  Chat,
-  ChatHeader,
-  ChatBody,
-  ChatFooter,
-  ChatText,
-  ChatHeaderBox,
-  ChatInput,
-  CloseIcon,
-  SendIcon,
-  IconsBox,
-  RefreshIcon,
-  ErrorMessage,
-  EndMessage,
-} from './styles';
-import Message from '../Message';
+import Chat from "./components/Chat";
+import ChatHeader from "./components/ChatHeader";
+import ChatBody from "./components/ChatBody";
+import ChatFooter from "./components/ChatFooter";
+import ChatText from "./components/ChatText";
+import ChatHeaderBox from "./components/ChatHeaderBox";
+import ChatInput from "./components/ChatInput";
+import CloseIcon from "./components/CloseIcon";
+import SendIcon from "./components/SendIcon";
+import IconsBox from "./components/IconsBox";
+import RefreshIcon from "./components/RefreshIcon";
+import ErrorMessage from "./components/ErrorMessage";
+import EndMessage from "./components/EndMessage";
 
-const Bot = ({
-  handleResetChat,
-  toggleOpen,
-  options,
-  style,
-  steps
-}) => {
+import Message from "../Message";
 
+const Bot = ({ handleResetChat, toggleOpen, options, steps }) => {
   const {
     header,
     botAvatarSrc,
-    sendMessage,
+    inputPlaceholder,
     endContent,
     messageDelay,
     sendingMessageCallback,
     endingCallback,
-    sendComponent,
-    loadingComponent
+    sendComponentFunction,
+    loadingComponent,
+    refreshComponent,
+    closeComponent,
   } = options;
 
-  const { width, positionStyles } = style;
+  const initial = steps ? steps[0] : null;
 
-  const initial = steps ? steps[0] : {};
-
-  const [value, setValue] = useState('');
-  const [actualStep, setActualStep] = useState(initial);
+  const [value, setValue] = useState("");
+  const [actualStep, setActualStep] = useState({ ...initial });
 
   const [isDisabled, setIsDisabled] = useState(true);
   const [error, setError] = useState(null);
@@ -50,7 +42,7 @@ const Bot = ({
 
   const [answers, setAnswers] = useState({
     values: {},
-    timeInMs: {}
+    timeInMs: {},
   });
 
   const [startTime, setStartTime] = useState(new Date());
@@ -58,7 +50,7 @@ const Bot = ({
 
   const delay = (customDelay) => {
     return customDelay ? customDelay : messageDelay;
-  }
+  };
 
   const calculateTimeMs = () => {
     const endTime = new Date();
@@ -66,10 +58,10 @@ const Bot = ({
 
     setStartTime(new Date());
     return timeDiff;
-  }
+  };
 
   useEffect(() => {
-    handleBotMessage(actualStep);
+    if (actualStep) handleNewMessage(actualStep);
   }, [actualStep]);
 
   useEffect(() => {
@@ -83,11 +75,14 @@ const Bot = ({
 
   const handleChange = (value) => {
     setValue(value);
-  }
+  };
 
-  const handleBotMessage = (newMessage) => {
-    setMessages(prev => [...prev, newMessage]);
-  }
+  const handleNewMessage = (newMessage) => {
+    const newArray = Object.assign([], messages);
+    newArray.push(newMessage);
+
+    setMessages(newArray);
+  };
 
   const handleAnswer = (option = null) => {
     setIsDisabled(true);
@@ -96,13 +91,13 @@ const Bot = ({
 
     const newMessage = {
       isUser: true,
-      content: option ? newValue.content : newValue
+      content: option ? newValue.content : newValue,
     };
 
-    if (actualStep && actualStep.validator) {
-      const result = actualStep.validator(value);
-      if (result) {
-        setError(result);
+    if (actualStep && actualStep.validator && !option) {
+      const error = actualStep.validator(value);
+      if (error) {
+        setError(error);
         setTimeout(() => {
           setIsDisabled(false);
           setError(null);
@@ -111,47 +106,56 @@ const Bot = ({
         return;
       }
     }
-    
-    const newAnswers = Object.assign({}, {
-      values: Object.assign({}, answers.values, {
-        [actualStep && actualStep.id]: option ? {
-          content: newValue.content,
-          value: newValue.value
-        } : newValue
-      }),
-      timeInMs: Object.assign({}, answers.timeInMs, {
-        [actualStep && actualStep.id]: calculateTimeMs()
-      })
-    })
+
+    const newAnswers = Object.assign(
+      {},
+      {
+        values: Object.assign({}, answers.values, {
+          [actualStep && actualStep.id]: option
+            ? {
+                content: newValue.content,
+                value: newValue.value,
+              }
+            : newValue,
+        }),
+        timeInMs: Object.assign({}, answers.timeInMs, {
+          [actualStep && actualStep.id]: calculateTimeMs(),
+        }),
+      }
+    );
+    handleChange("");
+
     setAnswers(newAnswers);
+    handleNewMessage(newMessage);
 
-    const newArray = [...messages, newMessage];
-
-    handleChange('');
-    setMessages(newArray);
-    triggerNext(option ? option.goTo : (actualStep && actualStep.goTo));
+    triggerNext(option ? option.goTo : actualStep && actualStep.goTo);
     sendingMessageCallback(newAnswers, toggleOpen);
-  }
+  };
 
   const triggerNext = (goTo = null) => {
-    const target = goTo ? goTo : (actualStep && actualStep.goTo);
+    const target = goTo ? goTo : actualStep && actualStep.goTo;
 
     setTimeout(() => {
-      const nextStep = steps && steps.find(x => x.id === target);
+      const nextStep = steps && steps.find((x) => x.id === target);
       if (nextStep) setActualStep(nextStep);
     }, messageDelay);
-  }
+  };
 
-  const lastIsBot = (index) => {
+  const lastMessageIsBot = (index) => {
     const lastMessage = messages[index - 1];
     return !lastMessage ? false : !lastMessage.isUser;
-  }
+  };
 
-  const renderMessage = (message, index) => (
+  const renderMessage = (key, message, index) => (
     <Message
+      key={key}
       message={Object.assign({}, message, {
-        src: !message.isUser ? !lastIsBot(index) ? botAvatarSrc : null : null,
-        delay: delay(message.delay)
+        src: !message.isUser
+          ? !lastMessageIsBot(index)
+            ? botAvatarSrc
+            : null
+          : null,
+        delay: delay(message.delay),
       })}
       loadingComponent={loadingComponent}
       answers={answers}
@@ -159,60 +163,59 @@ const Bot = ({
       triggerNext={triggerNext}
       setIsDisabled={setIsDisabled}
     />
-  )
+  );
 
   const disableSend = () => {
-    return isDisabled || !value || value === '';
-  }
+    return isDisabled || !value || value === "";
+  };
 
   return (
-    <Chat style={positionStyles} width={width}>
+    <Chat>
       <ChatHeader>
         <ChatHeaderBox>
           <ChatText>{header}</ChatText>
         </ChatHeaderBox>
         <IconsBox>
-          <RefreshIcon onClick={handleResetChat} />
-          <CloseIcon onClick={toggleOpen} />
+          <RefreshIcon onClick={handleResetChat}>
+            {refreshComponent}
+          </RefreshIcon>
+          <CloseIcon onClick={toggleOpen}>{closeComponent}</CloseIcon>
         </IconsBox>
       </ChatHeader>
-      <ChatBody id='lf-chat-body'>
-        {
-          messages && messages.length > 0 && messages.map((message, index) => (
-            <div key={message.id}>
-              {renderMessage(message, index)}
-            </div>
-          ))
-        }
+      <ChatBody id="rbc-chat-body">
+        {messages &&
+          messages.length > 0 &&
+          messages.map((message, index) =>
+            renderMessage(`KEY-${message.id}-${index}`, message, index)
+          )}
       </ChatBody>
-      <ChatFooter error={error}>
-        {
-          end ?
+      {(!isDisabled || error || end) && (
+        <ChatFooter error={error}>
+          {end ? (
             <EndMessage>{endContent}</EndMessage>
-            :
-            !error ?
-              <>
-                <ChatInput
-                  autoFocus
-                  value={error ? error : value}
-                  onKeyDown={(e) => e.key === 'Enter' && handleAnswer()}
-                  onChange={(e) => handleChange(e.target.value)}
-                  disabled={isDisabled}
-                  placeholder={sendMessage} />
-                {
-                  !error && (
-                    <div onClick={() => !disableSend() ? handleAnswer() : {}} >
-                      {sendComponent ? sendComponent : <SendIcon disabled={disableSend()} />}
-                    </div>
-                  )
-                }
-              </>
-              :
-              <ErrorMessage>{error}</ErrorMessage>
-        }
-      </ChatFooter>
+          ) : !error ? (
+            <>
+              <ChatInput
+                autoFocus
+                value={value}
+                onKeyDown={(e) => e.key === "Enter" && handleAnswer()}
+                onChange={(e) => handleChange(e.target.value)}
+                disabled={isDisabled}
+                placeholder={inputPlaceholder}
+              />
+              <div onClick={() => (!disableSend() ? handleAnswer() : {})}>
+                <SendIcon disabled={disableSend()}>
+                  {sendComponentFunction(disableSend())}
+                </SendIcon>
+              </div>
+            </>
+          ) : (
+            <ErrorMessage>{error}</ErrorMessage>
+          )}
+        </ChatFooter>
+      )}
     </Chat>
   );
-}
+};
 
 export default Bot;
