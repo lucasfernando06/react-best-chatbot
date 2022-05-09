@@ -198,7 +198,9 @@ const Bot = ({ handleResetChat, toggleOpen, options, steps }) => {
               <ChatInput
                 autoFocus
                 value={value}
-                onKeyDown={(e) => e.key === "Enter" && handleAnswer()}
+                onKeyDown={(e) =>
+                  e.key === "Enter" && (!disableSend() ? handleAnswer() : {})
+                }
                 onChange={(e) => handleChange(e.target.value)}
                 disabled={isDisabled}
                 placeholder={inputPlaceholder}

@@ -534,7 +534,7 @@ const Bot$1 = ({
   }, end ? /*#__PURE__*/React.createElement(Container$a, null, endContent) : !error ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Container$g, {
     autoFocus: true,
     value: value,
-    onKeyDown: e => e.key === "Enter" && handleAnswer(),
+    onKeyDown: e => e.key === "Enter" && (!disableSend() ? handleAnswer() : {}),
     onChange: e => handleChange(e.target.value),
     disabled: isDisabled,
     placeholder: inputPlaceholder
