@@ -495,10 +495,8 @@ const Bot$1 = ({
 
   const triggerNext = (goTo = null) => {
     const target = goTo ? goTo : actualStep && actualStep.goTo;
-    setTimeout(() => {
-      const nextStep = steps && steps.find(x => x.id === target);
-      if (nextStep) setActualStep(nextStep);
-    }, messageDelay);
+    const nextStep = steps && steps.find(x => x.id === target);
+    if (nextStep) setActualStep(nextStep);
   };
 
   const lastMessageIsBot = index => {
